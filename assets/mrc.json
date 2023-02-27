@@ -1,0 +1,10 @@
+[
+    {"img":"/images/agadir.jpg","location":"Agadir"},
+    {"img":"/images/Marra.jpg","location":"Marrakech"},
+    {"img":"/images/casa.jpg","location":"Casablanca"},
+    {"img":"/images/chef.jpg","location":"Chefchaouen"},
+    {"img":"/images/tet.jpg","location":"Tetouan"},
+    {"img":"/images/dakh.jpg","location":"Dakhla"},
+    {"img":"/images/rab.jpg","location":"Rabat"},
+    {"img":"/images/fes.jpg","location":"Fes"}
+]
