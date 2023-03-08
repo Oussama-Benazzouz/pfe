@@ -2,7 +2,8 @@ import { Text, Button, Box } from "@chakra-ui/react";
 import Image from "next/legacy/image";
 import showFlights from "/public/images/showFlights.jpg";
 import hotelImg from "/public/images/moroccohotel.jpg";
-import { SearchIcon } from "@chakra-ui/icons";
+import { GrSend } from "react-icons/gr";
+import Router from "next/router";
 
 function BigCard() {
   return (
@@ -18,12 +19,15 @@ function BigCard() {
           <Text fontWeight={"Bold"} fontSize={{ base: "36px", md: "40px" }}>
             Flights
           </Text>
-          <Text fontsize={{ base: "12px", md: "16px" }}>
-            Search Flights & Places Hire to our most popular
+          <Text
+            fontsize={{ base: "12px", md: "16px" }}
+            marginLeft={{ base: "10", lg: "0" }}
+            marginRight={{ base: "10", lg: "0" }}
+          >
+            Search Flights & Places Hire to our most popular destinations
           </Text>
-          <Text fontsize={{ base: "12px", md: "16px" }}>destinations</Text>
           <Button
-            leftIcon={<SearchIcon />}
+            rightIcon={<GrSend />}
             variant="solid"
             colorScheme="teal"
             className="mt-5 mb-5 flex items-center justify-center"
@@ -51,15 +55,20 @@ function BigCard() {
           <Text fontWeight={"Bold"} fontSize={{ base: "36px", md: "40px" }}>
             Hotels
           </Text>
-          <Text fontsize={{ base: "12px", md: "16px" }}>
-            Search Flights & Places Hire to our most popular
+
+          <Text
+            fontsize={{ base: "12px", md: "16px" }}
+            marginLeft={{ base: "10", lg: "0" }}
+            marginRight={{ base: "10", lg: "0" }}
+          >
+            Search Flights & Places Hire to our most popular destinations
           </Text>
-          <Text fontsize={{ base: "12px", md: "16px" }}>destinations</Text>
           <Button
-            leftIcon={<SearchIcon />}
+            rightIcon={<GrSend className="text-white"/>}
             variant="solid"
             colorScheme="teal"
             className="mt-5 mb-5 flex items-center justify-center "
+            onClick={() => Router.push("/Hotels")}
           >
             Hotels
           </Button>

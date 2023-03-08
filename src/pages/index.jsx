@@ -6,8 +6,10 @@ import SmallCard from "../Components/SmallCard";
 import BigCard from "../Components/BigCard";
 import LargeCard from "../Components/LargeCard";
 import Footer from "../Components/Footer";
+import cardsData from "../../assets/mrc2.json";
+import MediumCard from "../Components/MediumCard";
 
-const Home = ({ exploreData }) => {
+const Home = ({ exploreData, cardsData }) => {
   return (
     <div className="html">
       <Head>
@@ -31,19 +33,27 @@ const Home = ({ exploreData }) => {
           </div>
         </section>
 
-        <BigCard />
 
-        <LargeCard 
+        <BigCard />
+        
+        <section>
+          <h2 className="text-4xl font-semibold py-8">Live Anywhere</h2>
+          <div className="flex space-x-3 overflow-scroll scrollbar-hide p-3 -ml-3">
+            {cardsData?.map(({ img, title }) => (
+              <MediumCard key={img} img={img} title={title} />
+            ))}
+          </div>
+        </section>
+
+        <LargeCard
           img="https://links.papareact.com/4cj"
           title="The greatest Outdoors"
-          description="Wishlists curated by GoMorocco."
+          description="Provided by GoMorocco."
           buttonText="Get Inspired"
         />
-
       </main>
 
       <Footer />
-
     </div>
   );
 };
@@ -52,6 +62,7 @@ export async function getStaticProps() {
   return {
     props: {
       exploreData,
+      cardsData,
     },
   };
 }
