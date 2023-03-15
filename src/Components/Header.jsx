@@ -11,7 +11,7 @@ import {
   MenuGroup,
   MenuDivider,
 } from "@chakra-ui/react";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import Router from "next/router";
 import { IoBedSharp, IoAirplane } from "react-icons/io5";
 import "react-date-range/dist/styles.css"; // main style file
@@ -20,6 +20,11 @@ import { DateRangePicker } from "react-date-range";
 import AuthModal from "./Modal/Auth/AuthModal";
 import { authModalState } from "../atoms/authModalAtom";
 import { useSetRecoilState } from "recoil";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase/clientApp";
+import { Avatar, AvatarBadge } from "@chakra-ui/react";
+import { signOut } from "firebase/auth";
+
 
 
 
@@ -29,6 +34,7 @@ function Header() {
   const [endDate, setEndDate] = useState(new Date());
   const [noOfGuests, setNoOfGuests] = useState(1);
   const setAuthModalState = useSetRecoilState(authModalState);
+  const [user, loading, error] = useAuthState(auth);
 
 
   const selectionRange = {
@@ -75,54 +81,98 @@ function Header() {
       {/* Right Side */}
       <AuthModal />
       <div className="flex items-center space-x-4 justify-end text-gray-500">
-        <Menu>
-          {({ isOpen }) => (
-            <>
-              <MenuButton
-                isActive={isOpen}
-                as={Button}
-                rightIcon={<HamburgerIcon />}
-                variant="outline"
-                borderRadius="md"
-                borderWidth="1px"
-                _hover={{ bg: "gray.400" }}
-                _expanded={{ bg: "#8DD3BB" }}
-                _focus={{ boxShadow: "outline" }}
-              >
-                <UserCircleIcon className="h-6" />
-              </MenuButton>
-              <MenuList>
-                <MenuGroup title="Navigate">
-                  <MenuItem>
-                    <IoAirplane className="mr-2" />
-                    Find Flights
-                  </MenuItem>
-                  <MenuItem onClick={() => Router.push("/Hotels")}>
-                    <IoBedSharp className="mr-2" />
-                    Find Hotels
-                  </MenuItem>
-                </MenuGroup>
-                <MenuDivider />
-                <MenuGroup title="Account">
-                  <MenuItem
-                    onClick={() =>
-                      setAuthModalState({ open: true, view: "login" })
-                    }
-                  >
-                    Login
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() =>
-                      setAuthModalState({ open: true, view: "signup" })
-                    }
-                  >
-                    Sign Up
-                  </MenuItem>
-                </MenuGroup>
-              </MenuList>
-            </>
-          )}
-        </Menu>
+        {user ? (
+          <Menu>
+            {({ isOpen }) => (
+              <>
+                <MenuButton
+                  isActive={isOpen}
+                  as={Button}
+                  rightIcon={<ChevronDownIcon />}
+                  variant="ghost"
+                  _hover={{ bg: "gray.100" }}
+                  _expanded={{ bg: "#FFF" }}
+                  _focus={{ boxShadow: "outline" }}
+                >
+                  <Avatar size="sm" name="" src="https://bit.ly/broken-link">
+                    <AvatarBadge boxSize="1.25em" bg="green.500" />
+                  </Avatar>
+                </MenuButton>
+                <MenuList>
+                  <MenuGroup title="Navigate">
+                    <MenuItem>
+                      <IoAirplane className="mr-2" />
+                      Find Flights
+                    </MenuItem>
+                    <MenuItem onClick={() => Router.push("/Hotels")}>
+                      <IoBedSharp className="mr-2" />
+                      Find Hotels
+                    </MenuItem>
+                    <MenuItem onClick={() => Router.push("/Profile")}>
+                      <UserCircleIcon className="h-5 mr-2" />
+                      Profile
+                    </MenuItem>
+                  </MenuGroup>
+                  <MenuDivider />
+                  <MenuGroup title="Account">
+                    <MenuItem
+                      onClick={() => signOut(auth)}
+                    >Sign Out</MenuItem>
+                  </MenuGroup>
+                </MenuList>
+              </>
+            )}
+          </Menu>
+        ) : (
+          <Menu>
+            {({ isOpen }) => (
+              <>
+                <MenuButton
+                  isActive={isOpen}
+                  as={Button}
+                  rightIcon={<HamburgerIcon />}
+                  variant="outline"
+                  borderRadius="md"
+                  borderWidth="1px"
+                  _hover={{ bg: "gray.400" }}
+                  _expanded={{ bg: "#8DD3BB" }}
+                  _focus={{ boxShadow: "outline" }}
+                >
+                  <UserCircleIcon className="h-6" />
+                </MenuButton>
+                <MenuList>
+                  <MenuGroup title="Navigate">
+                    <MenuItem>
+                      <IoAirplane className="mr-2" />
+                      Find Flights
+                    </MenuItem>
+                    <MenuItem onClick={() => Router.push("/Hotels")}>
+                      <IoBedSharp className="mr-2" />
+                      Find Hotels
+                    </MenuItem>
+                  </MenuGroup>
+                  <MenuDivider />
+                  <MenuGroup title="Account">
+                    <MenuItem
+                      onClick={() =>
+                        setAuthModalState({ open: true, view: "login" })
+                      }
+                    >
+                      Login
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() =>
+                        setAuthModalState({ open: true, view: "signup" })
+                      }
+                    >
+                      Sign Up
+                    </MenuItem>
+                  </MenuGroup>
+                </MenuList>
+              </>
+            )}
+          </Menu>
+        )}
       </div>
 
       {searchInput && (
