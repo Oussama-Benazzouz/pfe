@@ -10,6 +10,8 @@ import {
   Button,
   MenuGroup,
   MenuDivider,
+  Text,
+  HStack,
 } from "@chakra-ui/react";
 import { HamburgerIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import Router from "next/router";
@@ -51,6 +53,7 @@ function Header() {
   const resetInput = () => {
     setSearchInput("");
   };
+
 
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md py-5 px-5 md:px-10">
@@ -94,9 +97,16 @@ function Header() {
                   _expanded={{ bg: "#FFF" }}
                   _focus={{ boxShadow: "outline" }}
                 >
-                  <Avatar size="sm" name="" src="https://bit.ly/broken-link">
-                    <AvatarBadge boxSize="1.25em" bg="green.500" />
-                  </Avatar>
+                  <HStack>
+                    <Avatar
+                      size="sm"
+                      name=""
+                      src={user.photoURL}
+                    >
+                      <AvatarBadge boxSize="1.25em" bg="green.500" />
+                    </Avatar>
+                    <Text className="ml-1">{user.displayName}</Text>
+                  </HStack>
                 </MenuButton>
                 <MenuList>
                   <MenuGroup title="Navigate">
@@ -108,16 +118,18 @@ function Header() {
                       <IoBedSharp className="mr-2" />
                       Find Hotels
                     </MenuItem>
-                    <MenuItem onClick={() => Router.push("/Profile")}>
+                    <MenuItem
+                      onClick={() =>
+                        Router.push(`/Profile/${user.uid}`)
+                      }
+                    >
                       <UserCircleIcon className="h-5 mr-2" />
                       Profile
                     </MenuItem>
                   </MenuGroup>
                   <MenuDivider />
                   <MenuGroup title="Account">
-                    <MenuItem
-                      onClick={() => signOut(auth)}
-                    >Sign Out</MenuItem>
+                    <MenuItem onClick={() => signOut(auth)}>Sign Out</MenuItem>
                   </MenuGroup>
                 </MenuList>
               </>

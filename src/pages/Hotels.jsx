@@ -6,7 +6,7 @@ import Image from "next/legacy/image";
 
 function Hotels() {
   return (
-    <html className="html h-screen flex flex-col justify-between">
+    <div className=" h-screen flex flex-col justify-between">
       <HeaderNoSearch />
 
       <main className="mb-auto">
@@ -45,7 +45,7 @@ function Hotels() {
       </main>
 
       <Footer />
-    </html>
+    </div>
   );
 }
 
