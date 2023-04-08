@@ -13,29 +13,19 @@ import ProfileForm from "../../../Components/Profile/ProfileForm";
 function ProfilePage({ userData }) {
   const [user, loading, error] = useAuthState(auth);
 
-  if (!userData ) {
+  if (user && userData) {
     return (
       <>
-        <HeaderNoSearch userData={userData}/>
-        <ProfileNotFound />
-        <Footer />
-      </>
-    );
-  }
-
-  if (user) {
-    return (
-      <>
-        <HeaderNoSearch userData={userData}/>
+        <HeaderNoSearch />
         <ProfileHeader userData={userData} />
-        <ProfileForm userData={userData}/>
+        <ProfileForm userData={userData} />
         <Footer />
       </>
     );
-  }else{
+  } else {
     return (
       <>
-        <HeaderNoSearch userData={userData} />
+        <HeaderNoSearch />
         <ProfileNotFound />
         <Footer />
       </>

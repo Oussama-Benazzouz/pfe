@@ -22,17 +22,31 @@ function Footer() {
             layout="fill"
           />
         </div>
-        
 
         <Flex
           className="text-md text-gray-800 font-bold"
           display={{ base: "none", md: "none", lg: "flex" }}
         >
-          <p className=" cursor-pointer hover:text-[#8DD3BB] " onClick={() => Router.push('/')}>Home</p>
+          <p
+            className=" cursor-pointer hover:text-[#8DD3BB] "
+            onClick={() => Router.push("/")}
+          >
+            Home
+          </p>
           <Spacer />
-          <p className="cursor-pointer hover:text-[#8DD3BB] ">Find Flights</p>
+          <p
+            className="cursor-pointer hover:text-[#8DD3BB] "
+            onClick={() => Router.push("/Flights")}
+          >
+            Find Flights
+          </p>
           <Spacer />
-          <p className="cursor-pointer hover:text-[#8DD3BB] " onClick={() => Router.push('/Hotels')}>Find Hotels</p>
+          <p
+            className="cursor-pointer hover:text-[#8DD3BB] "
+            onClick={() => Router.push("/Hotels")}
+          >
+            Find Hotels
+          </p>
         </Flex>
 
         <div className=" flex flex-row items-center justify-end ">
@@ -71,6 +85,5 @@ function Footer() {
     </div>
   );
 }
-
 
 export default Footer;

@@ -20,7 +20,7 @@ function BigCard() {
             Flights
           </Text>
           <Text
-            fontsize={{ base: "12px", md: "16px" }}
+            fontSize={{ base: "12px", md: "16px" }}
             marginLeft={{ base: "10", lg: "0" }}
             marginRight={{ base: "10", lg: "0" }}
           >
@@ -31,6 +31,7 @@ function BigCard() {
             variant="solid"
             colorScheme="teal"
             className="mt-5 mb-5 flex items-center justify-center"
+            onClick={() => Router.push("/Flights")}
           >
             Flights
           </Button>
@@ -57,14 +58,14 @@ function BigCard() {
           </Text>
 
           <Text
-            fontsize={{ base: "12px", md: "16px" }}
+            fontSize={{ base: "12px", md: "16px" }}
             marginLeft={{ base: "10", lg: "0" }}
             marginRight={{ base: "10", lg: "0" }}
           >
             Search Flights & Places Hire to our most popular destinations
           </Text>
           <Button
-            rightIcon={<GrSend className="text-white"/>}
+            rightIcon={<GrSend className="text-white" />}
             variant="solid"
             colorScheme="teal"
             className="mt-5 mb-5 flex items-center justify-center "

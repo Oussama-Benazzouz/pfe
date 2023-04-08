@@ -1,5 +1,5 @@
 import Image from "next/legacy/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SearchIcon, UserCircleIcon, UsersIcon } from "@heroicons/react/solid";
 import img from "/public/images/gomoroccomid.svg";
 import {
@@ -26,18 +26,52 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/clientApp";
 import { Avatar, AvatarBadge } from "@chakra-ui/react";
 import { signOut } from "firebase/auth";
+import { useRouter } from "next/router";
+import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "../firebase/clientApp";
+import safeJsonStringify from "safe-json-stringify";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-
-
-
-function Header() {
+function Header({ placeholder }) {
   const [searchInput, setSearchInput] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [noOfGuests, setNoOfGuests] = useState(1);
   const setAuthModalState = useSetRecoilState(authModalState);
   const [user, loading, error] = useAuthState(auth);
+  const [userData, setUserData] = useState({});
 
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      const userRef = doc(firestore, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+
+      if (docSnap.exists()) {
+        const userData = {
+          firstName: docSnap.data().firstName,
+          lastName: docSnap.data().lastName,
+          photoURL: docSnap.data().photoURL,
+        };
+        setUserData(userData);
+      } else {
+        console.log("No such document!");
+      }
+    });
+  }, [user]);
+
+  const router = useRouter();
+
+  const search = () => {
+    router.push({
+      pathname: "/Search",
+      query: {
+        location: searchInput,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        noOfGuests,
+      },
+    });
+  };
 
   const selectionRange = {
     startDate: startDate,
@@ -53,7 +87,6 @@ function Header() {
   const resetInput = () => {
     setSearchInput("");
   };
-
 
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md py-5 px-5 md:px-10">
@@ -76,7 +109,7 @@ function Header() {
           onChange={(e) => setSearchInput(e.target.value)}
           className="pl-5 bg-transparent outline-none flex-grow text-gray-600 placeholder-gray-400"
           type="text"
-          placeholder="Start your search"
+          placeholder={placeholder || "Start your search"}
         />
         <SearchIcon className=" hidden lg:inline bg-[#8DD3BB] h-8 text-white rounded-full p-2 cursor-pointer md:mx-2 " />
       </div>
@@ -98,19 +131,17 @@ function Header() {
                   _focus={{ boxShadow: "outline" }}
                 >
                   <HStack>
-                    <Avatar
-                      size="sm"
-                      name=""
-                      src={user.photoURL}
-                    >
+                    <Avatar size="sm" name="" src={userData.photoURL}>
                       <AvatarBadge boxSize="1.25em" bg="green.500" />
                     </Avatar>
-                    <Text className="ml-1">{user.displayName}</Text>
+                    <Text className="ml-1">
+                      {userData.firstName + " " + userData.lastName}{" "}
+                    </Text>
                   </HStack>
                 </MenuButton>
                 <MenuList>
                   <MenuGroup title="Navigate">
-                    <MenuItem>
+                    <MenuItem onClick={() => Router.push("/Flights")}>
                       <IoAirplane className="mr-2" />
                       Find Flights
                     </MenuItem>
@@ -119,9 +150,7 @@ function Header() {
                       Find Hotels
                     </MenuItem>
                     <MenuItem
-                      onClick={() =>
-                        Router.push(`/Profile/${user.uid}`)
-                      }
+                      onClick={() => Router.push(`/Profile/${user.uid}`)}
                     >
                       <UserCircleIcon className="h-5 mr-2" />
                       Profile
@@ -154,7 +183,7 @@ function Header() {
                 </MenuButton>
                 <MenuList>
                   <MenuGroup title="Navigate">
-                    <MenuItem>
+                    <MenuItem onClick={() => Router.push("/Flights")}>
                       <IoAirplane className="mr-2" />
                       Find Flights
                     </MenuItem>
@@ -216,7 +245,10 @@ function Header() {
             >
               Cancel
             </button>
-            <button className="flex-grow text-[#8DD3BB] font-semibold">
+            <button
+              className="flex-grow text-[#8DD3BB] font-semibold"
+              onClick={search}
+            >
               Search
             </button>
           </div>
